@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.time.Year;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,6 +33,11 @@ public class AddStudent extends HttpServlet {
 			int startingYear = Integer.parseInt(request.getParameter("startingYear"));
 			Double admissionGrade = Double.parseDouble(request.getParameter("admissionGrade"));
 
+			assert Pattern.matches(".*[a-zA-Z].*", Integer.toString(id)) : "Id shouldn't contain letters.";
+			assert Pattern.matches(".*[0-9].*", name) : "Student name shouldn't contain digits.";
+			assert startingYear < 1900 || startingYear > Year.now().getValue() : "Not a valid year";
+			assert admissionGrade < 0.0 || admissionGrade > 10.0 : "Not a valid admission grade."; 
+			
 			StudentOperations so = new StudentOperations();
 			so.saveStudent(new Student(id, name, startingYear, admissionGrade));
 			

@@ -3,10 +3,12 @@ package services;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.time.Year;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import database.DatabaseDetails;
 import entities.Grade;
@@ -27,6 +29,10 @@ public class StudentOperations {
 	}
 		
 	public void saveStudent(Student student){
+		assert Pattern.matches(".*[a-zA-Z].*", Integer.toString(student.getId())) : "Id shouldn't contain letters.";
+		assert Pattern.matches(".*[0-9].*", student.getName()) : "Student name shouldn't contain digits.";
+		assert student.getStartingYear() < 1900 || student.getStartingYear() > Year.now().getValue() : "Not a valid year";
+		assert student.getAdmissionGrade() < 0.0 || student.getAdmissionGrade() > 10.0 : "Not a valid admission grade."; 
 		DatabaseFileWriter.saveStudentToFile(student);
 	}
 	

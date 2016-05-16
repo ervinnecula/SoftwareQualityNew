@@ -64,16 +64,21 @@ public class DatabaseFileWriter {
 
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 			BufferedWriter writer = new BufferedWriter(new FileWriter(temporaryFile));
-
+			boolean studentFound = false;
 			while ((line = reader.readLine()) != null) {
 				String trimmedLine = line.trim();
 				splits = trimmedLine.split("\t");
-				if (Integer.parseInt(splits[0]) == student.getId()) {
+				if (Integer.parseInt(splits[0]) != student.getId()) {
 					writer.write(line + System.getProperty("line.separator"));
+				}
+				else
+				{
+					studentFound = true;
 				}
 			}
 			writer.close();
 			reader.close();
+			assert studentFound == false : "Student wasn't found.";
 			succesful = temporaryFile.renameTo(inputFile);
 
 		} catch (IOException e) {
@@ -96,16 +101,21 @@ public class DatabaseFileWriter {
 
 			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 			BufferedWriter writer = new BufferedWriter(new FileWriter(temporaryFile));
-
+			boolean courseFound = false;
 			while ((line = reader.readLine()) != null) {
 				String trimmedLine = line.trim();
 				splits = trimmedLine.split("\t");
-				if (Integer.parseInt(splits[0]) == course.getId()) {
+				if (Integer.parseInt(splits[0]) != course.getId()) {
 					writer.write(line + System.getProperty("line.separator"));
+				}
+				else
+				{
+					courseFound = true;
 				}
 			}
 			writer.close();
 			reader.close();
+			assert courseFound == false : "Course wasn't found.";
 			succesful = temporaryFile.renameTo(inputFile);
 
 		} catch (IOException e) {
