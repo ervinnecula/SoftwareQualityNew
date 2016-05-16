@@ -93,7 +93,7 @@ public class DatabaseFileWriter {
 	public static boolean removeCourseFromFile(Course course){
 		
 		File inputFile = new File(DatabaseDetails.PATH_TO_COURSES_FILE);
-		File temporaryFile = new File("temporaryFile.tsv");
+		File temporaryFile = new File(DatabaseDetails.PATH_TO_TEMPORARY_FILE);
 		String line;
 		String[] splits;
 		boolean succesful = false;
@@ -113,10 +113,11 @@ public class DatabaseFileWriter {
 					courseFound = true;
 				}
 			}
+			inputFile.delete();
+			temporaryFile.renameTo(inputFile);
 			writer.close();
 			reader.close();
 			assert courseFound == false : "Course wasn't found.";
-			succesful = temporaryFile.renameTo(inputFile);
 
 		} catch (IOException e) {
 			e.printStackTrace();
